@@ -236,6 +236,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetProduct.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ProductBy_Category_Group.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductBy_Category_Group.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ProductBy_category_group.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductBy_category_group.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\Product_List.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -304,6 +315,17 @@
     <Content Include="Reports\DataSetProduct.xss">
       <DependentUpon>DataSetProduct.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\ProductBy_category_group.xsc">
+      <DependentUpon>ProductBy_category_group.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ProductBy_category_group.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProductBy_category_group.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\ProductBy_category_group.xss">
+      <DependentUpon>ProductBy_category_group.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -339,6 +361,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\ProductBy_Category_Group.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ProductBy_Category_Group.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Product_List.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Product_List.cs</LastGenOutput>

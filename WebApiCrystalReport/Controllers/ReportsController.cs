@@ -52,5 +52,43 @@ namespace WebApiCrystalReport.Controllers
                 new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
             return result;
         }
+
+        [AllowAnonymous]
+        [Route("GenerateCategoryWiseProductListReport")]
+        [HttpGet]
+        [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
+        public HttpResponseMessage GenerateCategoryWiseProductListReport()
+        {
+            var rd = new ReportDocument();
+
+            rd.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/Reports/ProductBy_Category_Group.rpt")));
+            rd.SetDataSource(model.Products.Select(p => new {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                CategoryId=p.Category.Id,
+                CategoryName = p.Category.Name
+                
+
+
+            }).ToList());
+
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(ms.ToArray())
+            };
+            result.Content.Headers.ContentDisposition =
+                new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = "ProductBy_Category_Group.pdf"
+                };
+            result.Content.Headers.ContentType =
+                new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+            return result;
+        }
     }
 }
