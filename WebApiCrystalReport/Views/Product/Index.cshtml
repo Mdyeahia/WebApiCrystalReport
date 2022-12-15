@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.10.0.js"></script>
+<script src="~/Scripts/i18n/grid.locale-en.js"></script>
+<script src="~/Scripts/jquery.jqGrid.min.js"></script>
+<h2>Product List</h2>
+<div>
+    <table id="jqGrid"></table>
+    <div id="jqControls"></div>
+</div> 
+
+
+ <script type="text/javascript">
+    $(document).ready(function () {
+        $("#jqGrid").jqGrid({
+            url: "/Product/GetProductList",
+            datatype: 'json',
+            mtype: 'Get',
+            colNames: ['Id', 'Name', 'Category', 'Description'],
+            colModel: [
+                { key: true, hidden: true, name: 'Id', index: 'Id', editable: true },
+                { key: false, name: 'Name', index: 'Name', editable: true,width:50 },
+                {
+                    key: false, name: 'CategoryId', index: 'CategoryId', width: 50, sortable: true,
+                    align: 'center',
+                    editable: true,
+                    cellEdit: true,
+                    edittype: "select",
+                    //formatter: 'select',
+                    editoptions:
+               {
+                   dataUrl: "/Product/GetCategoryList",
+                   datatype: "json",
+                   async: false,
+                   buildSelect: function (data) {
+                       var response = jQuery.parseJSON(data);
+
+                       var s = '<select>';
+                       s += '<option value="0">---Select Brand---</option>';
+
+                       $.each(response, function () {
+                           s += '<option value="' + this.Id + '">' + this.Value + '</option>';
+                       });
+
+                       return s + "</select>";
+                   }
+               }
+                },
+                { key: false, name: 'Description', index: 'Description', editable: true }],
+            pager: jQuery('#jqControls'),
+            rowNum: 10,
+            rowList: [10, 20, 30, 40, 50],
+            height: '100%',
+            viewrecords: true,
+            caption: 'Product Records',
+            emptyrecords: 'No Product Records are Available to Display',
+            jsonReader: {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            autowidth: true,
+            multiselect: false
+        }).navGrid('#jqControls', { edit: true, add: true, del: true, search: false, refresh: true },
+        {
+            zIndex: 100,
+            url: '/Product/Edit',
+            closeOnEscape: true,
+            closeAfterEdit: true,
+            recreateForm: true,
+            afterComplete: function (response) {
+                if (response.responseText) {
+                    alert(response.responseText);
+                }
+            }
+        },
+        {
+            zIndex: 100,
+            url: "/Product/Create",
+            closeOnEscape: true,
+            closeAfterAdd: true,
+            afterComplete: function (response) {
+                if (response.responseText) {
+                    alert(response.responseText);
+                }
+            }
+        },
+        {
+            zIndex: 100,
+            url: "/Product/Delete",
+            closeOnEscape: true,
+            closeAfterDelete: true,
+            recreateForm: true,
+            msg: "Are you sure you want to delete Product... ? ",
+            afterComplete: function (response) {
+                if (response.responseText) {
+                    alert(response.responseText);
+                }
+            }
+        });
+       
+        
+    });
+    
+</script>
